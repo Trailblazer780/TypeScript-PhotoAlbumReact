@@ -1,0 +1,89 @@
+# build image with: docker compose -f docker-compose.yml build
+# run container with: docker compose -f docker-compose.yml up
+# build and run with: docker compose -f docker-compose.yml up --build
+
+version: '3.7'
+
+services:
+
+  mysql:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    image: mysql-server
+    container_name: my-mysql-server
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - data-volume:/var/lib/mysql
+
+    # these variables could be stored in an external .env file as well
+    # w0090347 will automatically be set to full access to sean_dotnetcoreSamples
+    environment:
+      MYSQL_ROOT_PASSWORD: nscc
+      MYSQL_DATABASE: sean_fullstackSamples
+      MYSQL_USER: w0090347
+      MYSQL_PASSWORD: Forrester308
+    networks:
+      - app-network
+
+  adminer:
+    image: adminer
+    container_name: my-adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - app-network      
+
+  server:
+    # where the container's files are located in project folder
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    # the name of the container image docker-compose will build
+    image: api-server
+    # the name of the container when running
+    container_name: my-api-server
+    # the volume where all the container files (code, etc.) will be copied to
+    volumes:
+      - ./server/:/var/www/html/
+    # exposing port 80 and mapping to container's external port 80 so it can be hit
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=development
+    # defining custom network container will run on
+    networks:
+      - app-network
+      
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: client-server
+    container_name: my-client-server
+    command: npm start
+    # node_modules gets its own volume for all containers to share
+    volumes:
+      - ./client/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    # the two volumes that were created
+    node_modules:
+    data-volume:
+    web-root:
+      driver: local
