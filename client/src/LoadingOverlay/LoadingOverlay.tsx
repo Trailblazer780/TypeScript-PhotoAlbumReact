@@ -16,10 +16,10 @@ const LoadingOverlay = ({enabled, bgColor, spinnerColor}:LoadingOverlayProps) =>
         ? 
         <div className="loading-overlay" style={styles}>
             <Loader
-                type="TailSpin"
+                type="Circles"
                 color={spinnerColor}
-                height={50}
-                width={50}
+                height={100}
+                width={100}
             />
         </div>
         : <div></div>
