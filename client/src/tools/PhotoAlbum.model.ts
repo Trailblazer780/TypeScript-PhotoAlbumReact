@@ -21,3 +21,7 @@ export interface Comment {
     comment:string;
     author:string;
 }
+
+export interface ViewPhotoProps {
+    photos:Photo[];
+}

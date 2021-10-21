@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.scss';
+import Content from './Content/Content';
 import LoadingOverlay from './LoadingOverlay/LoadingOverlay';
 import { PhotoData, Photo, Comment } from './tools/PhotoAlbum.model';
 import { getJSONData } from "./tools/Toolkit";
@@ -14,7 +15,7 @@ const App = () => {
 
   const onResponse = (result:PhotoData) => {
     console.table(result);
-  
+    setLoading(false);
 
   };
 
@@ -22,7 +23,7 @@ const App = () => {
   
 
   // ---------------------------------------------- State Variables
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(true);
   const [photos, setPhotos] = React.useState<Photo[]>([]);
 
   // ---------------------------------------------- Lifecycle Hooks
@@ -39,6 +40,9 @@ const App = () => {
         <button style={{"width" : "25%"}}>Jump</button>
         <button style={{"width" : "25%"}}>Comment</button>
       </div>
+
+      <Content photos={photos}></Content>
+      
     </div>
   );
 }
