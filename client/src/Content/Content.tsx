@@ -3,7 +3,7 @@ import './Content.scss';
 
 const Content = () => {
 
-
+    
 }
 
 export default Content;

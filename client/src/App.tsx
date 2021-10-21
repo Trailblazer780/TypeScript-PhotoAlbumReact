@@ -1,13 +1,32 @@
 import React from 'react';
 import './App.scss';
 import LoadingOverlay from './LoadingOverlay/LoadingOverlay';
+import { PhotoData, Photo, Comment } from './tools/PhotoAlbum.model';
+import { getJSONData } from "./tools/Toolkit";
+
+// URL to Web API
+const RETRIEVE_SCRIPT:string = "http://localhost/retrieveAlbum.php?count=11"; 
+
 
 
 const App = () => {
 
-  // ---------------------------------------------- state variables
-  const [loading, setLoading] = React.useState<boolean>(false);
 
+  const onResponse = (result:PhotoData) => {
+    console.table(result);
+  
+
+  };
+
+  const onError = (message:string) => console.log("*** Error has occured during AJAX data transmission: " + message);
+  
+
+  // ---------------------------------------------- State Variables
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [photos, setPhotos] = React.useState<Photo[]>([]);
+
+  // ---------------------------------------------- Lifecycle Hooks
+  React.useEffect(() => {getJSONData(RETRIEVE_SCRIPT, onResponse, onError);}, []);
 
   return (
     <div className="main">
