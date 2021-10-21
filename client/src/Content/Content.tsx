@@ -1,26 +1,31 @@
 import React from 'react';
 import './Content.scss';
-import {PhotoData, ViewPhotoProps} from "./../tools/PhotoAlbum.model";
+import {ContentProps, Comment, Photo } from "./../tools/PhotoAlbum.model";
 
 
-const Content = ({photos}:ViewPhotoProps) => {
-
-    //--------------------------------------- Setup State Variables
-    const [visible, setVisible] = React.useState<Boolean>(true);
-
+const Content = ({photo}:ContentProps) => {
 
     return (
-        <div className="content">
-            <div className="content__picture">
-                <p id="NoImage" style={{display: (visible ? 'block' : 'none')}}>There are no images to display.</p>
-                <img id="mainPicture" src=""/>
+        (photo === undefined) ?
+            <div className="content">
+                <p id="NoImage" >There are no images to display.</p>
             </div>
-        <div className="content__title" id="mainPictureTitle"></div>
-        <div className="content__caption" id="mainPictureCaption"></div>
-        <div className="content__comment" id="mainPictureComments">
-
-        </div>
-    </div>
+        :
+            <div className="content">
+                <div className="content__picture">
+                    <img id="mainPicture" src={"/images/photos/" + photo.source}/>
+                </div>
+                <div className="content__title" id="mainPictureTitle">{photo.title}</div>
+                <div className="content__caption" id="mainPictureCaption">{photo.caption}</div>
+                <div className="content__comment" id="mainPictureComments">{photo.comments.map((comments:Comment, i:number) => {
+                    return (
+                        <div key={i} className="content__comment">
+                            Author: {comments.author}<br/>
+                            {comments.comment}
+                        </div>
+                    )
+                } ) }</div>
+            </div>
     )
     
 }
