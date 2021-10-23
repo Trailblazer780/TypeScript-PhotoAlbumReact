@@ -25,3 +25,15 @@ export interface Comment {
 export interface ContentProps {
     photo:Photo;
 }
+
+export interface JumpPhoto {
+    enabled:boolean;
+    photo:Photo[];
+    setIndex:Function;
+    currentIndex:number;
+}
+
+export interface SubmitComment {
+    enabled:boolean;
+    showComment:Function
+}

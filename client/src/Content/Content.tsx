@@ -20,8 +20,8 @@ const Content = ({photo}:ContentProps) => {
                 <div className="content__comment" id="mainPictureComments">{photo.comments.map((comments:Comment, i:number) => {
                     return (
                         <div key={i} className="content__comment">
-                            Author: {comments.author}<br/>
-                            {comments.comment}
+                            <strong>Author:</strong> {comments.author}<br/>
+                            <strong>Comment:</strong>{comments.comment}
                         </div>
                     )
                 } ) }</div>

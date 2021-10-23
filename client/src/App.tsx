@@ -1,8 +1,10 @@
 import React from 'react';
 import './App.scss';
 import Content from './Content/Content';
+import Jump from './Jump/Jump';
+import Comment from './Comment/Comment';
 import LoadingOverlay from './LoadingOverlay/LoadingOverlay';
-import { PhotoData, Photo, Comment, ContentProps } from './tools/PhotoAlbum.model';
+import { PhotoData, Photo, SubmitComment, ContentProps } from './tools/PhotoAlbum.model';
 import { getJSONData } from "./tools/Toolkit";
 
 // URL to Web API
@@ -34,6 +36,24 @@ const App = () => {
     }
   }
 
+  const showJump = () => {
+    if(jump === true){
+      setJump(false);
+    }
+    else {
+      setJump(true);  
+    }
+  }
+
+  const showComment = () => {
+    if(commentMenu === true){
+      setCommentMenu(false);
+    }
+    else {
+      setCommentMenu(true);  
+    }
+  }
+
   const loadPhotos = () => {
     getJSONData(RETRIEVE_SCRIPT, onResponse, onError)
   }
@@ -44,10 +64,11 @@ const App = () => {
 
   // ---------------------------------------------- State Variables
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
+  const [jump, setJump] = React.useState<boolean>(false);
+  const [commentMenu, setCommentMenu] = React.useState<boolean>(false);
   const [photos, setPhotos] = React.useState<Photo[]>([]);
   const [index, setIndex] = React.useState<number>(0);
-  console.log(index);
+
   // ---------------------------------------------- Lifecycle Hooks
   // React.useEffect(() => {loadPhotos()}, []);
 
@@ -59,10 +80,12 @@ const App = () => {
       <div className="btn-group" style={{"width" : "100%"}} >
         <button style={{"width" : "25%"}} onClick={previousPhoto} disabled={(index === 0) ? true : false}>Previous</button>
         <button style={{"width" : "25%"}} onClick={nextPhoto} disabled={(index < photos.length-1) ? false : true}>Next</button>
-        <button style={{"width" : "25%"}}>Jump</button>
-        <button style={{"width" : "25%"}}>Comment</button>
+        <button style={{"width" : "25%"}} onClick={showJump}>Jump</button>
+        <button style={{"width" : "25%"}} onClick={showComment}>Comment</button>
       </div>
-
+      <Jump enabled={jump} photo={photos} setIndex={setIndex} currentIndex={index}></Jump>
+      <Comment enabled={commentMenu} showComment={showComment}></Comment>
+      <h3 className="header-text" > Photo {index + 1} of {photos.length}</h3>
       <Content photo={photos[index]}></Content>
 
     </div>
