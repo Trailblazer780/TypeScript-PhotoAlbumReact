@@ -5,12 +5,10 @@ import Jump from './Jump/Jump';
 import Comment from './Comment/Comment';
 import LoadingOverlay from './LoadingOverlay/LoadingOverlay';
 import { PhotoData, Photo, SubmitComment, ContentProps } from './tools/PhotoAlbum.model';
-import { getJSONData } from "./tools/Toolkit";
+import { getJSONData, sendJSONData} from "./tools/Toolkit";
 
 // URL to Web API
 const RETRIEVE_SCRIPT:string = "http://localhost/retrieveAlbum.php?count=11"; 
-
-
 
 const App = () => {
 
@@ -19,11 +17,13 @@ const App = () => {
     // console.table(result);
     setPhotos(result.photos);
     setLoading(false);
-
+    if(index === 0){
+      console.log(index);
+    }
   };
 
   const nextPhoto = () => {
-    if(index < photos.length){
+    if(index < photos.length -1){
       setIndex(index + 1);
       console.log("Setting index next: " + index);
     }
@@ -71,20 +71,19 @@ const App = () => {
 
   // ---------------------------------------------- Lifecycle Hooks
   // React.useEffect(() => {loadPhotos()}, []);
-
   return (
     <div className="main">
       <LoadingOverlay bgColor="#808080" spinnerColor="#FF4433" enabled={loading} />
 
       <h1 className="header-text" >Ethan's Photo Album Full Stack Web Application V2.0</h1>
       <div className="btn-group" style={{"width" : "100%"}} >
-        <button style={{"width" : "25%"}} onClick={previousPhoto} disabled={(index === 0) ? true : false}>Previous</button>
-        <button style={{"width" : "25%"}} onClick={nextPhoto} disabled={(index < photos.length-1) ? false : true}>Next</button>
+        <button style={{"width" : "25%", backgroundColor: (index===0)? "#000000" : "#555555"}} onClick={() => {previousPhoto();}} disabled={(index === 0) ? true : false}>Previous</button>
+        <button style={{"width" : "25%", backgroundColor: (index < photos.length-1)? "#555555" : "#000000"}} onClick={nextPhoto} disabled={(index < photos.length-1) ? false : true}>Next</button>
         <button style={{"width" : "25%"}} onClick={showJump}>Jump</button>
         <button style={{"width" : "25%"}} onClick={showComment}>Comment</button>
       </div>
       <Jump enabled={jump} photo={photos} setIndex={setIndex} currentIndex={index}></Jump>
-      <Comment enabled={commentMenu} showComment={showComment}></Comment>
+      <Comment enabled={commentMenu} showComment={showComment} setLoading={setLoading} photo={photos[index]} refresh={loadPhotos} successSubmit={setCommentMenu}></Comment>
       <h3 className="header-text" > Photo {index + 1} of {photos.length}</h3>
       <Content photo={photos[index]}></Content>
 
