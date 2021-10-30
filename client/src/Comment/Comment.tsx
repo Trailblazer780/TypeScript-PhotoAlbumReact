@@ -7,16 +7,21 @@ import { sendJSONData } from '../tools/Toolkit';
 const SEND_SCRIPT:string = "http://localhost/addComment.php";
 
 const Comment = ({enabled, showComment, setLoading, photo, refresh, successSubmit}:SubmitComment) => {
-
+    // clicking submit button
     const commentSubmission = (e:any) => {
+        // turning loading overley on during data transmission
         setLoading(true);
+        // setting up data to be sent
         let jsonData:Object = {"photoId": photo.id, "author": author, "comment": comment};
+        // clearing data from input fields
         setAuthor("");
         setComment("");
+        // sending data to server
         sendJSONData(SEND_SCRIPT, JSON.stringify(jsonData), refresh, onError);
+        // force refresh of comments
         successSubmit(false);
     }
-
+    // if error ocurrs during transmission
     const onError = (message:string):void => console.log("*** Error has occured during comment AJAX data transmission: " + message);
 
     const [author, setAuthor] = React.useState<string>("");

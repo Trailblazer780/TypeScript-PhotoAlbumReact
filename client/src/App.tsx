@@ -12,7 +12,7 @@ const RETRIEVE_SCRIPT:string = "http://localhost/retrieveAlbum.php?count=11";
 
 const App = () => {
 
-
+  // Recieving data from API
   const onResponse = (result:PhotoData) => {
     // console.table(result);
     setPhotos(result.photos);
@@ -21,21 +21,21 @@ const App = () => {
       console.log(index);
     }
   };
-
+  // Clicking the next button
   const nextPhoto = () => {
     if(index < photos.length -1){
       setIndex(index + 1);
       console.log("Setting index next: " + index);
     }
   }
-
+  // Clicking the previous button
   const previousPhoto = () => {
     if(index > 0 ){
       setIndex(index - 1);
       console.log("Setting index previous: " + index);
     }
   }
-
+  // Clicking the jump button
   const showJump = () => {
     if(jump === true){
       setJump(false);
@@ -44,7 +44,7 @@ const App = () => {
       setJump(true);  
     }
   }
-
+  // Clicking the comment button
   const showComment = () => {
     if(commentMenu === true){
       setCommentMenu(false);
@@ -53,11 +53,11 @@ const App = () => {
       setCommentMenu(true);  
     }
   }
-
+  // loading all of the photo data from web api
   const loadPhotos = () => {
     getJSONData(RETRIEVE_SCRIPT, onResponse, onError)
   }
-
+  // Error message if the data is not recieved
   const onError = (message:string) => console.log("*** Error has occured during AJAX data transmission: " + message);
 
   React.useEffect(() => {loadPhotos()}, []);
@@ -70,9 +70,9 @@ const App = () => {
   const [index, setIndex] = React.useState<number>(0);
 
   // ---------------------------------------------- Lifecycle Hooks
-  // React.useEffect(() => {loadPhotos()}, []);
   return (
     <div className="main">
+      {/* Loading overlay  */}
       <LoadingOverlay bgColor="#808080" spinnerColor="#FF4433" enabled={loading} />
 
       <h1 className="header-text" >Ethan's Photo Album Full Stack Web Application V2.0</h1>
@@ -82,9 +82,13 @@ const App = () => {
         <button style={{"width" : "25%"}} onClick={showJump}>Jump</button>
         <button style={{"width" : "25%"}} onClick={showComment}>Comment</button>
       </div>
+      {/* Jump component  */}
       <Jump enabled={jump} photo={photos} setIndex={setIndex} currentIndex={index}></Jump>
+      {/* Comment component */}
       <Comment enabled={commentMenu} showComment={showComment} setLoading={setLoading} photo={photos[index]} refresh={loadPhotos} successSubmit={setCommentMenu}></Comment>
+      {/* photo counter */}
       <h3 className="header-text" > Photo {index + 1} of {photos.length}</h3>
+      {/* Content Component */}
       <Content photo={photos[index]}></Content>
 
     </div>
