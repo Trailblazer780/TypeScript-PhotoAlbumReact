@@ -35,5 +35,9 @@ export interface JumpPhoto {
 
 export interface SubmitComment {
     enabled:boolean;
-    showComment:Function
+    showComment:Function;
+    setLoading:Function;
+    photo:Photo;
+    refresh:Function;
+    successSubmit:Function;
 }
