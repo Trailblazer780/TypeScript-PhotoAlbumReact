@@ -1,7 +1,7 @@
 # PROG 3017 (Full Stack Programming) Project 1
 ## Photo Album React JS
 
-This program is written in JavaScript using the React framework.
+This program is written in TypeScript using the React framework.
 
 How to use:
 
