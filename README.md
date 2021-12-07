@@ -1,7 +1,7 @@
 # PROG 3017 (Full Stack Programming) Project 1
 ## Photo Album React JS
 
-This program is written in TypeScript using the React framework.
+This program is written in TypeScript using the React framework. The database that is being used is my sql.
 
 How to use:
 
